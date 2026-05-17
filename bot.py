@@ -19,6 +19,29 @@ logging.basicConfig(level=logging.INFO)
 threading.Thread(target=run_fake_server, daemon=True).start()
 
 bot = Bot(token=BOT_TOKEN)
+
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+class FakeHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"Bot is running")
+    def log_message(self, format, *args):
+        pass
+
+def run_fake_server():
+    try:
+        port = int(os.environ.get('PORT', 10000))
+        server = HTTPServer(('0.0.0.0', port), FakeHandler)
+        logging.info(f"Фейковый сервер запущен на порту {port}")
+        server.serve_forever()
+    except Exception as e:
+        logging.error(f"Ошибка фейкового сервера: {e}")
+
+threading.Thread(target=run_fake_server, daemon=True).start()
+
 dp = Dispatcher()
 
 # --- AI Модуль (Hostel AI Assistant) ---
