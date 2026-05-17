@@ -16,24 +16,6 @@ from database import init_db, save_booking, get_bookings
 
 logging.basicConfig(level=logging.INFO)
 
-# Фейковый HTTP-сервер для Render
-class FakeHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(b"Bot is running")
-    def log_message(self, format, *args):
-        pass
-
-def run_fake_server():
-    try:
-        port = int(os.environ.get('PORT', 10000))
-        server = HTTPServer(('0.0.0.0', port), FakeHandler)
-        logging.info(f"Фейковый сервер запущен на порту {port}")
-        server.serve_forever()
-    except Exception as e:
-        logging.error(f"Ошибка фейкового сервера: {e}")
-
 threading.Thread(target=run_fake_server, daemon=True).start()
 
 bot = Bot(token=BOT_TOKEN)
@@ -61,8 +43,8 @@ async def get_ai_response(user_message: str, user_data: dict, history: list) -> 
         "   - Hostel 'Narodni Dom' is located at Antona Čehova 18, Novi Sad. It's a quiet, cozy place with a garden.\n"
         "   - Facilities: kitchen (dishes, microwave, oven), washing machine & dryer, courtyard with tables, fast WiFi.\n"
         "   - Rooms:\n"
-        "     * Dormitory (shared): 6 beds per room. Male room and female room are separate. Price: 25€/night or 250€/month per bed.\n"
-        "     * Private Room: 2 rooms available for families or couples. Price: 40€/night or 400€/month.\n"
+        "     * Dormitory (shared): 6 beds per room. Male room and female room are separate. Price: 25€/night or 210€/month per bed.\n"
+        "     * Private Room: 2 rooms available for families or couples. Price: 40€/night or 360€/month.\n"
         "   - Maximum capacity: Private rooms (2) + Dormitory (12 beds) = 14 guests total.\n"
         "3. Booking flow:\n"
         "   - Ask for their name, number of guests, gender (for dormitory), and preferred dates.\n"
