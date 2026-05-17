@@ -16,8 +16,6 @@ from database import init_db, save_booking, get_bookings
 
 logging.basicConfig(level=logging.INFO)
 
-threading.Thread(target=run_fake_server, daemon=True).start()
-
 bot = Bot(token=BOT_TOKEN)
 
 # Фейковый HTTP-сервер для Render (чтобы не ругался на отсутствие порта)
